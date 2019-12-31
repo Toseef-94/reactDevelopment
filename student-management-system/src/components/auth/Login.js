@@ -3,28 +3,31 @@ import { Component } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { PostData } from "../../services/PostData";
+import { Redirect } from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      redirect: false
     };
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
   login(e) {
-          debugger;
-    PostData("login", this.state).then(result => {
-
-      let responseJson = result;
-      if(result.data.user){
-   
-      }
-    });
-    e.preventDefault();
+    if (this.state.email && this.state.password) {
+      PostData("login", this.state).then(result => {
+        let responseJson = result;
+        if (result.data.user) {
+          sessionStorage.setItem("userData", result);
+          this.setState({ redirect: true });
+        }
+      });
+      e.preventDefault();
+    }
   }
 
   onChange(e) {
@@ -32,6 +35,9 @@ class Login extends Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={"../../Home/Dashboard"} />;
+    }
     return (
       <div>
         <div id="login">
