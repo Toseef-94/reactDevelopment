@@ -1,26 +1,27 @@
 import React from "react";
 import { Component } from "react";
-import axios from "axios";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
-import { PostData } from "../../services/PostData";
 import { Redirect } from "react-router-dom";
+import { PostData } from "../../services/PostData";
 
-class Login extends Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
       email: "",
       password: "",
       redirect: false
     };
-    this.login = this.login.bind(this);
+    this.signUp = this.signUp.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
-  login(e) {
-    if (this.state.email && this.state.password) {
-      PostData("login", this.state).then(result => {
+  signUp(e) {
+    if (this.state.name && this.state.email && this.state.password) {
+      PostData("register", this.state).then(result => {
         let responseJson = result;
+        console.log(result);
         if (result.data.user) {
           sessionStorage.setItem("userData", result);
           this.setState({ redirect: true });
@@ -35,16 +36,16 @@ class Login extends Component {
   }
 
   render() {
-    if (this.state.redirect) {
-      return <Redirect to={"/home/dashboard"} />;
-    }
+        if (this.state.redirect) {
+          return <Redirect to={"/home/dashboard"} />;
+        }
         if (sessionStorage.getItem("userData")) {
           return <Redirect to={"/home/dashboard"} />;
         }
     return (
       <div>
-        <div id="login">
-          <h3 className="text-center text-white pt-5">Login form</h3>
+        <div id="signUp">
+          <h3 className="text-center text-white pt-5">Signup form</h3>
           <div className="container">
             <div
               id="login-row"
@@ -56,6 +57,21 @@ class Login extends Component {
                     <h3 className="text-center text-info">Login</h3>
                     <div className="form-group">
                       <label htmlFor="username" className="text-info">
+                        Username:
+                      </label>
+                      <br />
+                      <input
+                        type="text"
+                        name="name"
+                        className="form-control"
+                        placeholder="username"
+                        required
+                        autoComplete="off"
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="email" className="text-info">
                         Email:
                       </label>
                       <br />
@@ -99,13 +115,13 @@ class Login extends Component {
                       <button
                         type="submit"
                         className="btn btn-dark"
-                        onClick={this.login}
+                        onClick={this.signUp}
                       >
                         Submit
                       </button>
                     </div>
                     <div id="register-link" className="text-right">
-                      <a href="/signup" className="text-info">
+                      <a href="#" className="text-info">
                         Register here
                       </a>
                     </div>
@@ -120,4 +136,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default Signup;
