@@ -26,3 +26,22 @@
   #register-link {
   margin-top: -85px;
 }
+#login-form .MuiFormControl-root {
+  width: 100%;
+}
+.login-error {
+  position: absolute;
+  font-size: 13px;
+  color: red;
+}
+#register-link .text-info {
+  padding-left: 10px;
+  text-decoration: underline;
+}
+
+div#login {
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}

@@ -4,6 +4,10 @@ import axios from "axios";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { PostData } from "../../services/PostData";
 import { Redirect } from "react-router-dom";
+import Background from "../../public/images/login.jpg";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 
 class Login extends Component {
   constructor(props) {
@@ -11,19 +15,31 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      redirect: false
+      redirect: false,
+      emailOrPasswordError: ""
     };
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
   login(e) {
+    let emailOrPasswordError = "";
     if (this.state.email && this.state.password) {
       PostData("login", this.state).then(result => {
         let responseJson = result;
+        if (!this.state.email.includes("@")) {
+          emailOrPasswordError = "Invalid Email";
+        } else if (result.data.error) {
+          emailOrPasswordError = "Wrong email or password.";
+        }
+        if (emailOrPasswordError) {
+          this.setState({ emailOrPasswordError });
+        }
         if (result.data.user) {
           sessionStorage.setItem("userData", result);
           this.setState({ redirect: true });
+        } else {
+          let errorMsg = result.data.msg;
         }
       });
       e.preventDefault();
@@ -38,13 +54,24 @@ class Login extends Component {
     if (this.state.redirect) {
       return <Redirect to={"/home/dashboard"} />;
     }
-        if (sessionStorage.getItem("userData")) {
-          return <Redirect to={"/home/dashboard"} />;
+    if (sessionStorage.getItem("userData")) {
+      return <Redirect to={"/home/dashboard"} />;
+    }
+
+    const useStyles = makeStyles(theme => ({
+      root: {
+        "& > *": {
+          margin: theme.spacing(1),
+          width: 200
         }
+      }
+    }));
     return (
       <div>
-        <div id="login">
-          <h3 className="text-center text-white pt-5">Login form</h3>
+        <div id="login" style={{ backgroundImage: `url(${Background})` }}>
+          <h3 className="text-center text-white pt-5">
+            Student Management System
+          </h3>
           <div className="container">
             <div
               id="login-row"
@@ -55,61 +82,46 @@ class Login extends Component {
                   <form id="login-form" className="form" action method="post">
                     <h3 className="text-center text-info">Login</h3>
                     <div className="form-group">
-                      <label htmlFor="username" className="text-info">
-                        Email:
-                      </label>
-                      <br />
-                      <input
+                      <TextField
                         type="email"
                         name="email"
-                        className="form-control"
-                        placeholder="Email"
-                        required
+                        label="Email"
                         autoComplete="off"
+                        required
                         onChange={this.onChange}
                       />
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="password" className="text-info">
-                        Password:
-                      </label>
-                      <br />
-                      <input
+                    <div className="form-group passwordField">
+                      <TextField
                         type="password"
                         name="password"
+                        label="password"
                         autoComplete="off"
-                        className="form-control"
-                        placeholder="Password"
+                        required
                         onChange={this.onChange}
                       />
+                      <div class="login-error">
+                        {this.state.emailOrPasswordError}
+                      </div>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="remember-me" className="text-info">
-                        <span>Remember me</span>&nbsp;
-                        <span>
-                          <input
-                            id="remember-me"
-                            name="remember-me"
-                            type="checkbox"
-                          />
-                        </span>
-                      </label>
                       <br />
-
-                      <button
+                      <Button
                         type="submit"
-                        className="btn btn-dark"
+                        variant="contained"
+                        color="primary"
                         onClick={this.login}
                       >
-                        Submit
-                      </button>
-                    </div>
-                    <div id="register-link" className="text-right">
-                      <a href="/signup" className="text-info">
-                        Register here
-                      </a>
+                        Login
+                      </Button>
                     </div>
                   </form>
+                  <div id="register-link" className="text-center">
+                    <span className="newMember"> Create an account</span>
+                    <a href="/signup" className="text-info">
+                      Register
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
