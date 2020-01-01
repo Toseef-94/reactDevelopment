@@ -36,8 +36,11 @@ class Login extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={"../../Home/Dashboard"} />;
+      return <Redirect to={"/home/dashboard"} />;
     }
+        if (sessionStorage.getItem("userData")) {
+          return <Redirect to={"/home/dashboard"} />;
+        }
     return (
       <div>
         <div id="login">

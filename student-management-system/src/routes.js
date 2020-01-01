@@ -1,14 +1,21 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import PrivateRoute from "./private-route";
 import Dashboard from "././components/Home/Dashboard";
 import Login from "././components/auth/Login";
+
+
+const RedirectToLandingPage = () => {
+  return <Redirect to="/" />;
+};
 
 const Routes = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path="/home" component={Dashboard} />
-      <Route path="/auth" component={Login} />
+      <PrivateRoute exact path="/" component={Login} />
+      <Route exact path="/login" component={Login} />
+      <Route path="/home/dashboard" component={Dashboard} />
+      <Route component={RedirectToLandingPage} />
     </Switch>
   </BrowserRouter>
 );
