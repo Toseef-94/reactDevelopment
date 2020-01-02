@@ -4,6 +4,7 @@ import PrivateRoute from "./private-route";
 import Dashboard from "././components/Home/Dashboard";
 import Login from "././components/auth/Login";
 import Signup from "././components/auth/Signup";
+import Users from "././components/Home/Users";
 
 const RedirectToLandingPage = () => {
   return <Redirect to="/" />;
@@ -15,6 +16,7 @@ const Routes = () => (
       <PrivateRoute exact path="/" component={Login} />
       <Route exact path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/users" component={Users} />
       <Route path="/home/dashboard" component={Dashboard} />
       <Route component={RedirectToLandingPage} />
     </Switch>

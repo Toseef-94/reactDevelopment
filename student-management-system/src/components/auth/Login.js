@@ -16,7 +16,7 @@ class Login extends Component {
       email: "",
       password: "",
       redirect: false,
-      emailOrPasswordError: ""
+      emailOrPasswordError: "",
     };
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -69,9 +69,9 @@ class Login extends Component {
     return (
       <div>
         <div id="login" style={{ backgroundImage: `url(${Background})` }}>
-          <h3 className="text-center text-white pt-5">
+          {/* <h3 className="text-center text-white pt-5">
             Student Management System
-          </h3>
+          </h3> */}
           <div className="container">
             <div
               id="login-row"

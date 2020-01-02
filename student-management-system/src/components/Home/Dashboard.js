@@ -28,7 +28,7 @@ class Dashboard extends Component {
         if (this.state.redirect) {
           return <Redirect to={"/login"} />;
         }
-    return([<Sidebar />, <Header />, <Footer />]);
+    return( <div> Welcome </div>);
   }
 }
 
