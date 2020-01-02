@@ -16,7 +16,7 @@ class Login extends Component {
       email: "",
       password: "",
       redirect: false,
-      emailOrPasswordError: "",
+      emailOrPasswordError: ""
     };
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
